@@ -105,7 +105,7 @@ curl -f -L https://github.com/greenbone/gvmd/releases/download/v$GVMD_VERSION/gv
 gpg --verify $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz.asc $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
 read
 tar -C $SOURCE_DIR -xvzf $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
-kdir -p $BUILD_DIR/gvmd && cd $BUILD_DIR/gvmd
+mkdir -p $BUILD_DIR/gvmd && cd $BUILD_DIR/gvmd
 cmake $SOURCE_DIR/gvmd-$GVMD_VERSION \
   -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
   -DCMAKE_BUILD_TYPE=Release \
@@ -146,7 +146,7 @@ gpg --verify $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz.asc $SOURCE_DIR/gsa-$GSA_VERSIO
 read
 mkdir -p $SOURCE_DIR/gsa-$GSA_VERSION
 tar -C $SOURCE_DIR/gsa-$GSA_VERSION -xvzf $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
-udo mkdir -p $INSTALL_PREFIX/share/gvm/gsad/web/
+sudo mkdir -p $INSTALL_PREFIX/share/gvm/gsad/web/
 sudo cp -rv $SOURCE_DIR/gsa-$GSA_VERSION/* $INSTALL_PREFIX/share/gvm/gsad/web/
 ## gsad
 sudo apt install -y \
