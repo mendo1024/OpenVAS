@@ -320,11 +320,13 @@ sudo mkdir -p $OPENVAS_GNUPG_HOME
 sudo cp -r /tmp/openvas-gnupg/* $OPENVAS_GNUPG_HOME/
 sudo chown -R gvm:gvm $OPENVAS_GNUPG_HOME
 echo "%gvm ALL = NOPASSWD: /usr/local/sbin/openvas" | sudo tee -a /etc/sudoers
+# Setting up PostgreSQL
 sudo apt install -y postgresql
 sudo systemctl start postgresql@15-main
 sudo -u postgres createuser -DRS gvm
 sudo -u postgres createdb -O gvm gvmd
 sudo -u postgres psql gvmd -c "create role dba with superuser noinherit; grant dba to gvm;"
+# Setting up an Admin User & Setting the Feed Import Owner
 adminpwd=`sudo -u gvm /usr/local/sbin/gvmd --create-user=admin|awk -F\' '{print $2}'`
 echo "Admin password: " $adminpwd
 echo $adminpwd>/tmp/pgadmin.pwd
@@ -332,6 +334,34 @@ export amdinpwd
 adminid=`sudo -u gvm /usr/local/sbin/gvmd --get-users --verbose | awk '{print $2}'`
 export adminid
 sudo -u gvm /usr/local/sbin/gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $adminid
+# Setting up Services for Systemd
+## ospd-openvas.service
+cat << EOF > $BUILD_DIR/ospd-openvas.service
+[Unit]
+Description=OSPd Wrapper for the OpenVAS Scanner (ospd-openvas)
+Documentation=man:ospd-openvas(8) man:openvas(8)
+After=network.target networking.service redis-server@openvas.service mosquitto.service
+Wants=redis-server@openvas.service mosquitto.service notus-scanner.service
+ConditionKernelCommandLine=!recovery
+
+[Service]
+Type=exec
+User=gvm
+Group=gvm
+RuntimeDirectory=ospd
+RuntimeDirectoryMode=2775
+PIDFile=/run/ospd/ospd-openvas.pid
+ExecStart=/usr/local/bin/ospd-openvas --foreground --unix-socket /run/ospd/ospd-openvas.sock --pid-file /run/ospd/ospd-openvas.pid --log-file /var/log/gvm/ospd-openvas.log --lock-file-dir /var/lib/openvas --socket-mode 0o770 --mqtt-broker-address localhost --mqtt-broker-port 1883 --notus-feed-dir /var/lib/notus/advisories
+SuccessExitStatus=SIGKILL
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo cp -v $BUILD_DIR/ospd-openvas.service /etc/systemd/system/
+
 
 
 
