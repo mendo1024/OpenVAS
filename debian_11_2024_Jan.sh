@@ -325,8 +325,8 @@ sudo cp -r /tmp/openvas-gnupg/* $OPENVAS_GNUPG_HOME/
 sudo chown -R gvm:gvm $OPENVAS_GNUPG_HOME
 echo "%gvm ALL = NOPASSWD: /usr/local/sbin/openvas" | sudo tee -a /etc/sudoers
 # Setting up PostgreSQL
-sudo apt install -y postgresql postgresql-server-dev-16
-sudo systemctl start postgresql@16-main
+sudo apt install -y postgresql-15 postgresql-server-dev-15
+sudo systemctl start postgresql@15-main
 sudo -u postgres createuser -DRS gvm
 sudo -u postgres createdb -O gvm gvmd
 sudo -u postgres psql gvmd -c "create role dba with superuser noinherit; grant dba to gvm;"
