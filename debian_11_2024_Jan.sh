@@ -1,4 +1,4 @@
-# Versions
+echo "# Versions"
 export GVM_LIBS_VERSION=22.7.3
 export GVMD_VERSION=23.0.1
 export PG_GVM_VERSION=22.6.1
@@ -8,11 +8,11 @@ export OPENVAS_SMB_VERSION=22.5.3
 export OPENVAS_SCANNER_VERSION=22.7.6
 export OSPD_OPENVAS_VERSION=22.6.1
 export NOTUS_VERSION=22.6.0
-# Choosing an Install Prefix
+echo "# Choosing an Install Prefix"
 export INSTALL_PREFIX=/usr/local
-# Setting the PATH
+echo "# Setting the PATH"
 export PATH=$PATH:$INSTALL_PREFIX/sbin
-# Creating a Source, Build and Install Directory
+echo "# Creating a Source, Build and Install Directory"
 export SOURCE_DIR=$HOME/source
 mkdir -p $SOURCE_DIR
 export BUILD_DIR=$HOME/build
@@ -69,7 +69,7 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/gvm-libs
 make DESTDIR=$INSTALL_DIR/gvm-libs install
 sudo cp -rv $INSTALL_DIR/gvm-libs/* /
-## gvmd
+echo "## gvmd"
 sudo apt install -y \
   libglib2.0-dev \
   libgnutls28-dev \
@@ -276,7 +276,7 @@ sudo apt install -y \
 mkdir -p $INSTALL_DIR/greenbone-feed-sync
 python3 -m pip install --root=$INSTALL_DIR/greenbone-feed-sync --no-warn-script-location greenbone-feed-sync
 sudo cp -rv $INSTALL_DIR/greenbone-feed-sync/* /
-# gvm-tools
+echo "# gvm-tools"
 sudo apt install -y \
   python3 \
   python3-pip \
