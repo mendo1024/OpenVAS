@@ -23,8 +23,7 @@ exec su -l $USER
 
 # Clone this repository and run the install script
 git clone https://github.com/mendo1024/OpenVAS.git
-cd OpenVAS
-. ./debian_11_2024_Jan.sh
+OpenVAS/debian_11_2024_Jan.sh
 ```
 Expect 10-20 minutes of scrolling text.
 
