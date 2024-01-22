@@ -49,7 +49,8 @@ sudo apt install -y \
   libxml2-dev \
   libpcap-dev \
   libnet1-dev \
-  libpaho-mqtt-dev
+  libpaho-mqtt-dev \
+  sysvbanner
 sudo apt install -y \
   libldap2-dev \
   libradcli-dev
