@@ -19,7 +19,7 @@ export BUILD_DIR=$HOME/build
 mkdir -p $BUILD_DIR
 export INSTALL_DIR=$HOME/install
 mkdir -p $INSTALL_DIR
-# Installing Common Build Dependencies
+echo "# Installing Common Build Dependencies"
 sudo apt update
 sudo apt install dirmngr ca-certificates software-properties-common apt-transport-https lsb-release curl -y
 curl -fsSl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /usr/share/keyrings/postgresql.gpg > /dev/null
@@ -33,12 +33,12 @@ sudo apt install --no-install-recommends --assume-yes \
   python3 \
   python3-pip \
   gnupg
-# Importing the Greenbone Signing Key
+echo "# Importing the Greenbone Signing Key"
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
 gpg --import /tmp/GBCommunitySigningKey.asc
 echo "8AE4BE429B60A59B311C2E739823FAA60ED1E580:6:" | gpg --import-ownertrust
-# Building and Installing the Components
-## gvm-libs
+echo "# Building and Installing the Components"
+echo "## gvm-libs"
 sudo apt install -y \
   libglib2.0-dev \
   libgpgme-dev \
@@ -104,7 +104,6 @@ sudo apt install -y --no-install-recommends \
 curl -f -L https://github.com/greenbone/gvmd/archive/refs/tags/v$GVMD_VERSION.tar.gz -o $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gvmd/releases/download/v$GVMD_VERSION/gvmd-$GVMD_VERSION.tar.gz.asc -o $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz.asc
 gpg --verify $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz.asc $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
-# read
 tar -C $SOURCE_DIR -xvzf $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
 mkdir -p $BUILD_DIR/gvmd && cd $BUILD_DIR/gvmd
 cmake $SOURCE_DIR/gvmd-$GVMD_VERSION \
@@ -122,7 +121,7 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/gvmd
 make DESTDIR=$INSTALL_DIR/gvmd install
 sudo cp -rv $INSTALL_DIR/gvmd/* /
-## pg-gvm
+echo "## pg-gvm"
 sudo apt install -y \
   libglib2.0-dev \
   postgresql-server-dev-15 \
@@ -139,8 +138,8 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/pg-gvm
 make DESTDIR=$INSTALL_DIR/pg-gvm install
 sudo cp -rv $INSTALL_DIR/pg-gvm/* /
-# Greenbone Security Assistant
-## GSA
+echo "# Greenbone Security Assistant"
+echo "## GSA"
 curl -f -L https://github.com/greenbone/gsa/releases/download/v$GSA_VERSION/gsa-dist-$GSA_VERSION.tar.gz -o $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gsa/releases/download/v$GSA_VERSION/gsa-dist-$GSA_VERSION.tar.gz.asc -o $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz.asc
 gpg --verify $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz.asc $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
@@ -149,7 +148,7 @@ mkdir -p $SOURCE_DIR/gsa-$GSA_VERSION
 tar -C $SOURCE_DIR/gsa-$GSA_VERSION -xvzf $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
 sudo mkdir -p $INSTALL_PREFIX/share/gvm/gsad/web/
 sudo cp -rv $SOURCE_DIR/gsa-$GSA_VERSION/* $INSTALL_PREFIX/share/gvm/gsad/web/
-## gsad
+echo "## gsad"
 sudo apt install -y \
   libmicrohttpd-dev \
   libxml2-dev \
@@ -173,7 +172,7 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/gsad
 make DESTDIR=$INSTALL_DIR/gsad install
 sudo cp -rv $INSTALL_DIR/gsad/* /
-# openvas-smb
+echo "# openvas-smb"
 sudo apt install -y \
   gcc-mingw-w64 \
   libgnutls28-dev \
@@ -195,7 +194,7 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/openvas-smb
 make DESTDIR=$INSTALL_DIR/openvas-smb install
 sudo cp -rv $INSTALL_DIR/openvas-smb/* /
-# openvas-scanner
+echo "# openvas-scanner"
 sudo apt install -y \
   bison \
   libglib2.0-dev \
@@ -229,7 +228,7 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/openvas-scanner
 make DESTDIR=$INSTALL_DIR/openvas-scanner install
 sudo cp -rv $INSTALL_DIR/openvas-scanner/* /
-# ospd-openvas
+echo "# ospd-openvas"
 sudo apt install -y \
   python3 \
   python3-pip \
@@ -253,7 +252,7 @@ cd $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION
 mkdir -p $INSTALL_DIR/ospd-openvas
 python3 -m pip install --root=$INSTALL_DIR/ospd-openvas --no-warn-script-location .
 sudo cp -rv $INSTALL_DIR/ospd-openvas/* /
-# notus-scanner
+echo "# notus-scanner"
 sudo apt install -y \
   python3 \
   python3-pip \
@@ -270,7 +269,7 @@ cd $SOURCE_DIR/notus-scanner-$NOTUS_VERSION
 mkdir -p $INSTALL_DIR/notus-scanner
 python3 -m pip install --root=$INSTALL_DIR/notus-scanner --no-warn-script-location .
 sudo cp -rv $INSTALL_DIR/notus-scanner/* /
-# greenbone-feed-sync
+echo "# greenbone-feed-sync"
 sudo apt install -y \
   python3 \
   python3-pip
@@ -290,8 +289,8 @@ sudo apt install -y \
 mkdir -p $INSTALL_DIR/gvm-tools
 python3 -m pip install --root=$INSTALL_DIR/gvm-tools --no-warn-script-location gvm-tools
 sudo cp -rv $INSTALL_DIR/gvm-tools/* /
-# Performing a System Setup
-## Setting up the Redis Data Store
+echo "# Performing a System Setup"
+echo "## Setting up the Redis Data Store"
 sudo apt install -y redis-server
 sudo cp $SOURCE_DIR/openvas-scanner-$OPENVAS_SCANNER_VERSION/config/redis-openvas.conf /etc/redis/
 sudo chown redis:redis /etc/redis/redis-openvas.conf
@@ -314,7 +313,7 @@ sudo chmod -R g+srw /var/lib/gvm
 sudo chmod -R g+srw /var/lib/openvas
 sudo chmod -R g+srw /var/log/gvm
 sudo chown gvm:gvm /usr/local/sbin/gvmd
-# Feed Validation
+echo "# Feed Validation"
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
 export GNUPGHOME=/tmp/openvas-gnupg
 mkdir -p $GNUPGHOME
@@ -325,13 +324,13 @@ sudo mkdir -p $OPENVAS_GNUPG_HOME
 sudo cp -r /tmp/openvas-gnupg/* $OPENVAS_GNUPG_HOME/
 sudo chown -R gvm:gvm $OPENVAS_GNUPG_HOME
 echo "%gvm ALL = NOPASSWD: /usr/local/sbin/openvas" | sudo tee -a /etc/sudoers
-# Setting up PostgreSQL
+echo "# Setting up PostgreSQL"
 sudo apt install -y postgresql-15 postgresql-server-dev-15
 sudo systemctl start postgresql@15-main
 sudo -u postgres createuser -DRS gvm
 sudo -u postgres createdb -O gvm gvmd
 sudo -u postgres psql gvmd -c "create role dba with superuser noinherit; grant dba to gvm;"
-# Setting up an Admin User & Setting the Feed Import Owner
+echo "# Setting up an Admin User & Setting the Feed Import Owner"
 adminpwd=`sudo -u gvm /usr/local/sbin/gvmd --create-user=admin|awk -F\' '{print $2}'`
 echo "Admin password: " $adminpwd
 echo $adminpwd>/tmp/pgadmin.pwd
@@ -339,8 +338,8 @@ export amdinpwd
 adminid=`sudo -u gvm /usr/local/sbin/gvmd --get-users --verbose | awk '{print $2}'`
 export adminid
 sudo -u gvm /usr/local/sbin/gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $adminid
-# Setting up Services for Systemd
-## ospd-openvas.service
+echo "# Setting up Services for Systemd"
+echo "## ospd-openvas.service"
 cat << EOF > $BUILD_DIR/ospd-openvas.service
 [Unit]
 Description=OSPd Wrapper for the OpenVAS Scanner (ospd-openvas)
@@ -366,7 +365,7 @@ WantedBy=multi-user.target
 EOF
 
 sudo cp -v $BUILD_DIR/ospd-openvas.service /etc/systemd/system/
-## notus-scanner.service
+echo "## notus-scanner.service"
 cat << EOF > $BUILD_DIR/notus-scanner.service
 [Unit]
 Description=Notus Scanner
@@ -390,7 +389,7 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 sudo cp -v $BUILD_DIR/notus-scanner.service /etc/systemd/system/
-## gvmd.service
+echo "## gvmd.service"
 cat << EOF > $BUILD_DIR/gvmd.service
 [Unit]
 Description=Greenbone Vulnerability Manager daemon (gvmd)
@@ -414,7 +413,7 @@ TimeoutStopSec=10
 WantedBy=multi-user.target
 EOF
 sudo cp -v $BUILD_DIR/gvmd.service /etc/systemd/system/
-## gsad.service
+echo "## gsad.service"
 cat << EOF > $BUILD_DIR/gsad.service
 [Unit]
 Description=Greenbone Security Assistant daemon (gsad)
@@ -438,11 +437,11 @@ WantedBy=multi-user.target
 Alias=greenbone-security-assistant.service
 EOF
 sudo cp -v $BUILD_DIR/gsad.service /etc/systemd/system/
-## systemctl reload
+echo "## systemctl reload"
 sudo systemctl daemon-reload
-## Downloading the Data
+echo "## Downloading the Data"
 sudo /usr/local/bin/greenbone-feed-sync
-# Starting the Greenbone Community Edition Services
+echo "# Starting the Greenbone Community Edition Services"
 sudo systemctl start notus-scanner
 sudo systemctl start ospd-openvas
 sudo systemctl start gvmd
@@ -451,6 +450,7 @@ sudo systemctl enable notus-scanner
 sudo systemctl enable ospd-openvas
 sudo systemctl enable gvmd
 sudo systemctl enable gsad
+echo "Spawning the browser"
 xdg-open "http://127.0.0.1:9392" 2>/dev/null >/dev/null &
 
 
