@@ -1,4 +1,5 @@
 echo "# Versions"
+echo "#"
 export GVM_LIBS_VERSION=22.7.3
 export GVMD_VERSION=23.0.1
 export PG_GVM_VERSION=22.6.1
@@ -8,18 +9,26 @@ export OPENVAS_SMB_VERSION=22.5.3
 export OPENVAS_SCANNER_VERSION=22.7.6
 export OSPD_OPENVAS_VERSION=22.6.1
 export NOTUS_VERSION=22.6.0
+echo "#"
 echo "# Choosing an Install Prefix"
+echo "#"
 export INSTALL_PREFIX=/usr/local
+echo "#"
 echo "# Setting the PATH"
+echo "#"
 export PATH=$PATH:$INSTALL_PREFIX/sbin
+echo "#"
 echo "# Creating a Source, Build and Install Directory"
+echo "#"
 export SOURCE_DIR=$HOME/source
 mkdir -p $SOURCE_DIR
 export BUILD_DIR=$HOME/build
 mkdir -p $BUILD_DIR
 export INSTALL_DIR=$HOME/install
 mkdir -p $INSTALL_DIR
+echo "#"
 echo "# Installing Common Build Dependencies"
+echo "#"
 sudo apt update
 sudo apt install dirmngr ca-certificates software-properties-common apt-transport-https lsb-release curl -y
 curl -fsSl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /usr/share/keyrings/postgresql.gpg > /dev/null
@@ -33,12 +42,17 @@ sudo apt install --no-install-recommends --assume-yes \
   python3 \
   python3-pip \
   gnupg
+echo "#"
 echo "# Importing the Greenbone Signing Key"
+echo "#"
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
 gpg --import /tmp/GBCommunitySigningKey.asc
 echo "8AE4BE429B60A59B311C2E739823FAA60ED1E580:6:" | gpg --import-ownertrust
+echo "#"
 echo "# Building and Installing the Components"
+echo "#"
 echo "## gvm-libs"
+echo "#"
 sudo apt install -y \
   libglib2.0-dev \
   libgpgme-dev \
@@ -69,7 +83,9 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/gvm-libs
 make DESTDIR=$INSTALL_DIR/gvm-libs install
 sudo cp -rv $INSTALL_DIR/gvm-libs/* /
+echo "#"
 echo "## gvmd"
+echo "#"
 sudo apt install -y \
   libglib2.0-dev \
   libgnutls28-dev \
@@ -138,8 +154,11 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/pg-gvm
 make DESTDIR=$INSTALL_DIR/pg-gvm install
 sudo cp -rv $INSTALL_DIR/pg-gvm/* /
+echo "#"
 echo "# Greenbone Security Assistant"
+echo "#"
 echo "## GSA"
+echo "#"
 curl -f -L https://github.com/greenbone/gsa/releases/download/v$GSA_VERSION/gsa-dist-$GSA_VERSION.tar.gz -o $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gsa/releases/download/v$GSA_VERSION/gsa-dist-$GSA_VERSION.tar.gz.asc -o $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz.asc
 gpg --verify $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz.asc $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
@@ -148,7 +167,9 @@ mkdir -p $SOURCE_DIR/gsa-$GSA_VERSION
 tar -C $SOURCE_DIR/gsa-$GSA_VERSION -xvzf $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
 sudo mkdir -p $INSTALL_PREFIX/share/gvm/gsad/web/
 sudo cp -rv $SOURCE_DIR/gsa-$GSA_VERSION/* $INSTALL_PREFIX/share/gvm/gsad/web/
+echo "#"
 echo "## gsad"
+echo "#"
 sudo apt install -y \
   libmicrohttpd-dev \
   libxml2-dev \
@@ -172,7 +193,9 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/gsad
 make DESTDIR=$INSTALL_DIR/gsad install
 sudo cp -rv $INSTALL_DIR/gsad/* /
+echo "#"
 echo "# openvas-smb"
+echo "#"
 sudo apt install -y \
   gcc-mingw-w64 \
   libgnutls28-dev \
@@ -194,7 +217,9 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/openvas-smb
 make DESTDIR=$INSTALL_DIR/openvas-smb install
 sudo cp -rv $INSTALL_DIR/openvas-smb/* /
+echo "#"
 echo "# openvas-scanner"
+echo "#"
 sudo apt install -y \
   bison \
   libglib2.0-dev \
@@ -228,7 +253,9 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/openvas-scanner
 make DESTDIR=$INSTALL_DIR/openvas-scanner install
 sudo cp -rv $INSTALL_DIR/openvas-scanner/* /
+echo "#"
 echo "# ospd-openvas"
+echo "#"
 sudo apt install -y \
   python3 \
   python3-pip \
@@ -252,7 +279,9 @@ cd $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION
 mkdir -p $INSTALL_DIR/ospd-openvas
 python3 -m pip install --root=$INSTALL_DIR/ospd-openvas --no-warn-script-location .
 sudo cp -rv $INSTALL_DIR/ospd-openvas/* /
+echo "#"
 echo "# notus-scanner"
+echo "#"
 sudo apt install -y \
   python3 \
   python3-pip \
@@ -269,14 +298,18 @@ cd $SOURCE_DIR/notus-scanner-$NOTUS_VERSION
 mkdir -p $INSTALL_DIR/notus-scanner
 python3 -m pip install --root=$INSTALL_DIR/notus-scanner --no-warn-script-location .
 sudo cp -rv $INSTALL_DIR/notus-scanner/* /
+echo "#"
 echo "# greenbone-feed-sync"
+echo "#"
 sudo apt install -y \
   python3 \
   python3-pip
 mkdir -p $INSTALL_DIR/greenbone-feed-sync
 python3 -m pip install --root=$INSTALL_DIR/greenbone-feed-sync --no-warn-script-location greenbone-feed-sync
 sudo cp -rv $INSTALL_DIR/greenbone-feed-sync/* /
+echo "#"
 echo "# gvm-tools"
+echo "#"
 sudo apt install -y \
   python3 \
   python3-pip \
@@ -289,8 +322,11 @@ sudo apt install -y \
 mkdir -p $INSTALL_DIR/gvm-tools
 python3 -m pip install --root=$INSTALL_DIR/gvm-tools --no-warn-script-location gvm-tools
 sudo cp -rv $INSTALL_DIR/gvm-tools/* /
+echo "#"
 echo "# Performing a System Setup"
+echo "#"
 echo "## Setting up the Redis Data Store"
+echo "#"
 sudo apt install -y redis-server
 sudo cp $SOURCE_DIR/openvas-scanner-$OPENVAS_SCANNER_VERSION/config/redis-openvas.conf /etc/redis/
 sudo chown redis:redis /etc/redis/redis-openvas.conf
@@ -313,7 +349,9 @@ sudo chmod -R g+srw /var/lib/gvm
 sudo chmod -R g+srw /var/lib/openvas
 sudo chmod -R g+srw /var/log/gvm
 sudo chown gvm:gvm /usr/local/sbin/gvmd
+echo "#"
 echo "# Feed Validation"
+echo "#"
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
 export GNUPGHOME=/tmp/openvas-gnupg
 mkdir -p $GNUPGHOME
@@ -324,13 +362,17 @@ sudo mkdir -p $OPENVAS_GNUPG_HOME
 sudo cp -r /tmp/openvas-gnupg/* $OPENVAS_GNUPG_HOME/
 sudo chown -R gvm:gvm $OPENVAS_GNUPG_HOME
 echo "%gvm ALL = NOPASSWD: /usr/local/sbin/openvas" | sudo tee -a /etc/sudoers
+echo "#"
 echo "# Setting up PostgreSQL"
+echo "#"
 sudo apt install -y postgresql-15 postgresql-server-dev-15
 sudo systemctl start postgresql@15-main
 sudo -u postgres createuser -DRS gvm
 sudo -u postgres createdb -O gvm gvmd
 sudo -u postgres psql gvmd -c "create role dba with superuser noinherit; grant dba to gvm;"
+echo "#"
 echo "# Setting up an Admin User & Setting the Feed Import Owner"
+echo "#"
 adminpwd=`sudo -u gvm /usr/local/sbin/gvmd --create-user=admin|awk -F\' '{print $2}'`
 echo "Admin password: " $adminpwd
 echo $adminpwd>/tmp/pgadmin.pwd
@@ -338,8 +380,11 @@ export amdinpwd
 adminid=`sudo -u gvm /usr/local/sbin/gvmd --get-users --verbose | awk '{print $2}'`
 export adminid
 sudo -u gvm /usr/local/sbin/gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $adminid
+echo "#"
 echo "# Setting up Services for Systemd"
+echo "#"
 echo "## ospd-openvas.service"
+echo "#"
 cat << EOF > $BUILD_DIR/ospd-openvas.service
 [Unit]
 Description=OSPd Wrapper for the OpenVAS Scanner (ospd-openvas)
@@ -365,7 +410,9 @@ WantedBy=multi-user.target
 EOF
 
 sudo cp -v $BUILD_DIR/ospd-openvas.service /etc/systemd/system/
+echo "#"
 echo "## notus-scanner.service"
+echo "#"
 cat << EOF > $BUILD_DIR/notus-scanner.service
 [Unit]
 Description=Notus Scanner
@@ -389,7 +436,9 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 sudo cp -v $BUILD_DIR/notus-scanner.service /etc/systemd/system/
+echo "#"
 echo "## gvmd.service"
+echo "#"
 cat << EOF > $BUILD_DIR/gvmd.service
 [Unit]
 Description=Greenbone Vulnerability Manager daemon (gvmd)
@@ -413,7 +462,9 @@ TimeoutStopSec=10
 WantedBy=multi-user.target
 EOF
 sudo cp -v $BUILD_DIR/gvmd.service /etc/systemd/system/
+echo "#"
 echo "## gsad.service"
+echo "#"
 cat << EOF > $BUILD_DIR/gsad.service
 [Unit]
 Description=Greenbone Security Assistant daemon (gsad)
@@ -437,11 +488,17 @@ WantedBy=multi-user.target
 Alias=greenbone-security-assistant.service
 EOF
 sudo cp -v $BUILD_DIR/gsad.service /etc/systemd/system/
+echo "#"
 echo "## systemctl reload"
+echo "#"
 sudo systemctl daemon-reload
+echo "#"
 echo "## Downloading the Data"
+echo "#"
 sudo /usr/local/bin/greenbone-feed-sync
+echo "#"
 echo "# Starting the Greenbone Community Edition Services"
+echo "#"
 sudo systemctl start notus-scanner
 sudo systemctl start ospd-openvas
 sudo systemctl start gvmd
@@ -450,7 +507,9 @@ sudo systemctl enable notus-scanner
 sudo systemctl enable ospd-openvas
 sudo systemctl enable gvmd
 sudo systemctl enable gsad
+echo "#"
 echo "Spawning the browser"
+echo "#"
 xdg-open "http://127.0.0.1:9392" 2>/dev/null >/dev/null &
 
 
