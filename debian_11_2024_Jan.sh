@@ -137,7 +137,9 @@ make -j$(nproc)
 mkdir -p $INSTALL_DIR/gvmd
 make DESTDIR=$INSTALL_DIR/gvmd install
 sudo cp -rv $INSTALL_DIR/gvmd/* /
+echo "#"
 echo "## pg-gvm"
+echo "#"
 sudo apt install -y \
   libglib2.0-dev \
   postgresql-server-dev-15 \
