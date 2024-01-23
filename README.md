@@ -4,7 +4,16 @@
 The script will build and install a fully functional Greenbone Community Edition in the following steps:
 - Install the software required to build, install and run the scanner tools
 - Download and verify the source code
-- Build and install the scanner tools
+- Build and install the scanner tools:
+  - GVM_LIBS_VERSION=22.7.3
+  - GVMD_VERSION=23.0.1
+  - PG_GVM_VERSION=22.6.1
+  - GSA_VERSION=22.8.0
+  - GSAD_VERSION=22.7.0
+  - OPENVAS_SMB_VERSION=22.5.3
+  - OPENVAS_SCANNER_VERSION=22.7.6
+  - OSPD_OPENVAS_VERSION=22.6.1
+  - NOTUS_VERSION=22.6.0
 - Configure systemd services
 
 Prerequisites:
