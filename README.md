@@ -8,7 +8,7 @@ The script will build and install a fully functional Greenbone Community Edition
 - Configure systemd services
 
 Prerequisites:
-- Debian 11
+- Debian 12
 
 The script consists of hundreds of Linux one-liners taken from the [original guide in the Greenbone documentation](https://greenbone.github.io/docs/latest/22.4/source-build/index.html) without any error checking logic.
 
