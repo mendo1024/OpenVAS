@@ -1,3 +1,5 @@
+#!/bin/bash
+set -x
 echo "# Versions"
 echo "#"
 export GVM_LIBS_VERSION=22.7.3
@@ -27,13 +29,13 @@ mkdir -p $BUILD_DIR
 export INSTALL_DIR=$HOME/install
 mkdir -p $INSTALL_DIR
 echo "#"
-echo "# Installing Common Build Dependencies"
+echo "# Installing Common Build Dependenciesand postgresql"
 echo "#"
 sudo apt update
-sudo apt install dirmngr ca-certificates software-properties-common apt-transport-https lsb-release curl -y
-curl -fsSl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /usr/share/keyrings/postgresql.gpg > /dev/null
-echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main | sudo tee /etc/apt/sources.list.d/postgresql.list
-sudo apt update
+#sudo apt install dirmngr ca-certificates software-properties-common apt-transport-https lsb-release curl -y
+#curl -fsSl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /usr/share/keyrings/postgresql.gpg > /dev/null
+#echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main | sudo tee /etc/apt/sources.list.d/postgresql.list
+#sudo apt update
 sudo apt install --no-install-recommends --assume-yes \
   build-essential \
   curl \
@@ -367,7 +369,7 @@ echo "%gvm ALL = NOPASSWD: /usr/local/sbin/openvas" | sudo tee -a /etc/sudoers
 echo "#"
 echo "# Setting up PostgreSQL"
 echo "#"
-sudo apt install -y postgresql-15 postgresql-server-dev-15
+sudo apt install -y postgresql postgresql-server-dev-15
 sudo systemctl start postgresql@15-main
 sudo -u postgres createuser -DRS gvm
 sudo -u postgres createdb -O gvm gvmd
