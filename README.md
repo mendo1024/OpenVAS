@@ -34,6 +34,6 @@ exec su -l $USER
 git clone https://github.com/mendo1024/OpenVAS.git
 . ./OpenVAS/debian_11_2024_Jan.sh
 ```
-Expect 10-20 minutes of scrolling text.
+Expect 10-20 minutes of scrolling text and another 30 minuts or more of downloading the data feed.
 
 The `admin` password is in file `/tmp/pgadmin.pwd`
