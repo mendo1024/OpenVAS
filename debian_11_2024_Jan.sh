@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 echo "# Versions"
 echo "#"
 export GVM_LIBS_VERSION=22.7.3
