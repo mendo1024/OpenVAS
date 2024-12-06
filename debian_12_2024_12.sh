@@ -115,6 +115,8 @@ sudo apt install -y --no-install-recommends \
   smbclient \
   python3-lxml \
   gnutls-bin \
+  libcjson1 \
+  libcjson-dev \
   xml-twig-tools
 curl -f -L https://github.com/greenbone/gvmd/archive/refs/tags/v$GVMD_VERSION.tar.gz -o $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gvmd/releases/download/v$GVMD_VERSION/gvmd-$GVMD_VERSION.tar.gz.asc -o $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz.asc
@@ -229,7 +231,8 @@ sudo apt install -y \
   rsync \
   nmap \
   libjson-glib-dev \
-  libbsd-dev
+  libbsd-dev \
+  libcurl4 \
 sudo apt install -y \
   python3-impacket \
   libsnmp-dev
@@ -538,11 +541,11 @@ sudo /usr/local/bin/greenbone-feed-sync
 echo "#"
 echo "# Starting the Greenbone Community Edition Services"
 echo "#"
-sudo systemctl start notus-scanner
+#sudo systemctl start notus-scanner
 sudo systemctl start ospd-openvas
 sudo systemctl start gvmd
 sudo systemctl start gsad
-sudo systemctl enable notus-scanner
+#sudo systemctl enable notus-scanner
 sudo systemctl enable ospd-openvas
 sudo systemctl enable gvmd
 sudo systemctl enable gsad
