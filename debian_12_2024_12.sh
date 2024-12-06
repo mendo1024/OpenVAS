@@ -40,6 +40,7 @@ sudo apt install --no-install-recommends --assume-yes \
   pkg-config \
   python3 \
   python3-pip \
+  libcurl4-openssl-dev \
   gnupg
 echo "#"
 echo "# Importing the Greenbone Signing Key"
