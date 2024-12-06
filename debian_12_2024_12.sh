@@ -232,7 +232,7 @@ sudo apt install -y \
   nmap \
   libjson-glib-dev \
   libbsd-dev \
-  libcurl4 \
+  libcurl4
 sudo apt install -y \
   python3-impacket \
   libsnmp-dev
