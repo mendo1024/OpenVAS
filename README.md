@@ -5,15 +5,16 @@ The script will build and install a fully functional Greenbone Community Edition
 - Install the software required to build, install and run the scanner tools
 - Download and verify the source code
 - Build and install the scanner tools:
-  - GVM_LIBS_VERSION=22.7.3
-  - GVMD_VERSION=23.0.1
-  - PG_GVM_VERSION=22.6.1
-  - GSA_VERSION=22.8.0
-  - GSAD_VERSION=22.7.0
+  - GVM_LIBS_VERSION=22.10.0
+  - GVMD_VERSION=23.8.1
+  - PG_GVM_VERSION=22.6.5
+  - GSA_VERSION=23.2.1
+  - GSAD_VERSION=22.11.0
   - OPENVAS_SMB_VERSION=22.5.3
-  - OPENVAS_SCANNER_VERSION=22.7.6
-  - OSPD_OPENVAS_VERSION=22.6.1
+  - OPENVAS_SCANNER_VERSION=23.8.2
+  - OSPD_OPENVAS_VERSION=22.7.1
   - NOTUS_VERSION=22.6.0
+  - OPENVAS_DAEMON=23.8.2
 - Configure systemd services
 
 Prerequisites:
@@ -32,7 +33,7 @@ exec su -l $USER
 
 # Clone this repository and run the install script
 git clone https://github.com/mendo1024/OpenVAS.git
-. ./OpenVAS/debian_12_GCE_22_4_2024_01.sh
+. ./OpenVAS/debian_12_2024_12.sh
 ```
 Expect 10-20 minutes of scrolling text and another 30 minuts or more of downloading the data feed.
 
